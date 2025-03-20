@@ -40,19 +40,6 @@ SET
     rideable_type = TRIM(rideable_type),
     member_casual = TRIM(member_casual);
 
-ALTER TABLE rides ADD COLUMN start_location POINT;
-ALTER TABLE rides ADD COLUMN end_location POINT;
-
-UPDATE bikeshare.trip_data 
-SET start_location = POINT(start_lat, start_lng),
-    end_location = POINT(end_lat, end_lng);
-
-ALTER TABLE bikeshare.trip_data
-ADD COLUMN distance_km FLOAT;
-
-UPDATE bikeshare.trip_data
-SET distance_km = ST_Distance_Sphere(start_location, end_location) / 1000;
-
 SELECT DISTINCT (start_station_name,end_station_name,start_station_id, end_station_id)
 FROM bikeshare.trip_data;
 
